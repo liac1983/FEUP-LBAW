@@ -1,0 +1,24 @@
+tbody{
+  margin: 0;
+  background-color: #ffffff;
+  color: #000000;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+}   
+
+th, td {    
+    text-align: left;
+    padding: 8px;
+    border-bottom: 1px solid #f0ba4b;
+}
+
+th {
+    background-color: #f0ba4b;
+}
+
+tr:hover {
+    background-color: #efefef;
+}
+

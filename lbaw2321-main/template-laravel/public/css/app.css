@@ -1,0 +1,499 @@
+/* Reset default body margin and set background color */
+body {
+  margin: 0;
+  background-color: #ffffff;
+  color: #787878;
+}
+
+/* Header styles */
+main > header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Align content to the left */
+  background-color: #f5f5f5;
+  padding: 1em;
+  width: 260px; /* Set the fixed width to 150 pixels */
+  position: fixed; /* Fix the position */
+  top: 0; /* Position it at the top of the viewport */
+  bottom: 0; /* Stretch it to the bottom of the viewport */
+  box-sizing: border-box; /* Include padding and border in the total width */
+}
+
+
+main > header h1 {
+  margin: 0;
+}
+
+main > header a.button,
+main > header span {
+  margin: 1em;
+}
+
+/* Navigation styles */
+nav {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1em;
+}
+
+nav a {
+  margin: 0.5em 0;
+}
+
+/* Content styles */
+#content {
+  padding: 1em;
+  margin-left: 10cm; /* Adjust the left margin as needed */
+  max-width: calc(100% - 10cm); /* Set maximum width to allow responsiveness */
+}
+
+.event-gallery {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.event-box {
+  background-color: white;
+  border: 1px solid #f8f8f8;
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 10px;
+  display: 1;
+  width: 70%;
+  height: 70%; /* Set the height as a percentage */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.event-photo img {
+  width: 300px;
+  border-radius: 18px;
+  float: left;
+  height: 200px;
+  margin-left: 3%;
+  margin-top: 3%;
+  margin-bottom: 3%;
+}
+
+
+.event-details {
+  float: left;
+  padding: 10px;
+  flex: 1;
+  margin-top: 2%;
+  margin-left: 3%;
+  font-size: 10px;
+}
+
+.wishlist {
+  float: right;
+  margin-right: 2%;
+}
+
+
+/* Profile container styles */
+.profile-container {
+  display: flex;
+  align-items: center;
+}
+
+.profile-container img {
+  margin-right: 10px;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Invitation container styles */
+.invitation-container {
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 15px;
+}
+
+.invitation-box {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin: 0;
+}
+
+/* Comment box styles */
+.comment-box {
+  border: 1px solid #ccc;
+  border-radius: 14px;
+  padding: 10px;
+  margin-bottom: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Override milligram colors */
+button,
+a.button {
+  background-color: #9b4dca;
+  border-color: #9b4dca;
+}
+
+a.button.button-outline {
+  color: #9b4dca;
+}
+
+a {
+  color: #787878;
+}
+
+/* Input focus styles */
+input[type=text]:focus,
+input[type=email]:focus,
+input[type=password]:focus {
+  border-color: #9b4dca;
+}
+
+/* Responsive styles */
+@media (max-width: 70em) {
+  main > header {
+    padding: 1em;
+  }
+
+  #content {
+    margin-left: 5em; /* Adjust margin for smaller screens */
+    max-width: calc(100% - 5em);
+  }
+}
+
+@media (max-width: 40em) {
+  #cards {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 25em) {
+  body {
+    margin: 0;
+  }
+
+  main > header {
+    margin: 0;
+    padding: 0.5em;
+  }
+
+  main > header span {
+    margin: 0;
+  }
+
+  #content form {
+    margin: 0;
+    max-width: 25em;
+  }
+
+  article.card {
+    margin: 0;
+    border-bottom: 1px solid rgba(96, 108, 118, 0.4);
+  }
+}
+
+.create-event-button {
+  background-color: #f0ba4b; /* Yellow background color */
+  color: #FFF; /* Black text color */
+  border-radius: 25px; /* Rounded borders */
+  padding: 10px 30px; /* Adjust padding as needed */
+  font-weight: bold;
+  display: inline-block; /* Make it a block element with inline characteristics */
+  transition: background-color 0.3s ease; /* Smooth transition for background color */
+}
+
+/* Hover effect for the Create Event button */
+.create-event-button:hover {
+  background-color: #ffc107; /* Darker yellow on hover */
+}
+
+.rounded-search-bar {
+  display: flex;
+  align-items: center;
+  width: 70%;
+}
+
+.rounded-search-bar input {
+  flex: 1;
+  height: 40px;
+  background-color: #f5f5f5;
+  border-radius: 25px;
+}
+
+.username {
+  position: absolute;
+  bottom: 0;
+  margin-bottom: 10%;
+  margin-left: 0.5%;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+}
+
+.dots {
+  transform: rotate(90deg);
+  width: 15px;
+  height: 15px;
+}
+
+.profile-icon {
+  width: 57px;
+  height: auto;
+  margin-right: 1px;
+}
+
+.home_button:hover {
+  background-color: #efefef;
+  border-radius: 20px 20px 20px 20px;
+}
+
+.home_button.active {
+  background-color: #efefef;
+  border-radius: 20px 20px 20px 20px;
+}
+
+.wishlist_button:hover {
+  background-color: #efefef;
+  border-radius: 20px 20px 20px 20px;
+}
+
+.wishlist_button.active {
+  background-color: #efefef;
+  border-radius: 20px 20px 20px 20px;
+}
+
+.tag-buttons {
+  background-color: #efefef;
+  border-radius:25px;
+}
+
+.notification-dropdown {
+  position: absolute;
+  border: 2px solid #f0ba4b; 
+  background-color: white; 
+  padding: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px; 
+  display: none;
+  z-index: 2;
+}
+
+.notification-dropdown.show {
+  display: block; 
+}
+
+.share {
+  float: right;
+  margin-right: 2%;
+  margin-top: 1%;
+}
+
+.see_more {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  border: 2px solid #dadada;
+  border-radius: 20px;
+  width: 110px;
+  height: 30px;
+}
+
+.see-more-text {
+  margin-top: 6px;
+  margin-left: 1%;
+}
+
+.see-more-icon {
+  display: inline-block;
+  margin-left: 10px;
+  margin-top: 1px;
+  border-radius: 50%;
+  background-color: #dadada;
+}
+
+.tag-dropdown {
+  padding: 6px 35px; /* Reduz o padding para diminuir o tamanho total do dropdown */
+  border-radius: 20px;
+  background-color: #fafafa;
+  font-size: 12px; /* Certifique-se de que o tamanho da fonte não seja grande demais */
+  margin: 5px;
+  cursor: pointer;
+  width: fit-content; /* Ajusta a largura ao conteúdo, mas não menor do que o conteúdo */
+  max-width: 100%; /* Previne que o dropdown seja maior que o contêiner */
+  display: inline-block;
+  text-align: left;
+}
+
+.tag-dropdown:hover {
+  background-color: #f2f2f2;
+}
+
+/* Style for the options */
+.tag-dropdown option {
+  padding: 4px; /* Ajuste o padding das opções para alinhar com o dropdown */
+  text-align: left;
+}
+
+.filter-by-dropdown {
+  display: flex;
+  align-items: center;
+}
+
+.filter-by-dropdown label {
+  margin-right: 10px; /* Adjust as needed for spacing */
+}
+
+.rounded-profile {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+}
+
+.profile-container {
+  display: flex;
+  flex-direction: column;
+  background-color: #FFF;
+  border-radius: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  height: 80%;
+  width: 25%;
+  margin: 20px;
+  padding: 20px; /* Adiciona espaçamento interno dentro do contêiner */
+}
+
+.rounded-profile {
+  margin-bottom: 7%; /* Adiciona margem abaixo da foto de perfil */
+}
+
+.user-info{
+  background-color: #FFF;
+  border-radius: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  height: 60%;
+  width: 50%;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  margin-right: 15%;
+  margin-top: 2%;
+}
+
+.user-info p {
+  display: flex;
+  justify-content: space-between;
+}
+
+.user-info strong {
+  color: #c6cbcf;
+  margin-left: 3%;
+}
+
+.user-info strong.info {
+  color: #858b8f;
+  margin-right: 3%;
+}
+
+.user-info h3{
+  margin-left: 3%;
+  margin-top: 2%;
+  font-size: 20px;
+  font-weight: bold;
+  color: #787878;
+}
+
+.profile-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.edit-profile {
+  float:right;
+  margin-right: 65%;
+}
+
+.wishlist-container {
+  margin-top: 20px;
+  background-color: white;
+  padding: 10px;
+  border-radius: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 90%;
+}
+
+.container-events-wishlist {
+  background-color: #FFF;
+  margin-bottom: 10px;
+  margin-right: 7%;
+  padding: 10px;
+  border-radius: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 25%; /* Set a fixed width for the red container */
+  height: 190px;
+  display: inline-block;
+  box-sizing: border-box;
+}
+
+.event-details-wishlist {
+  display: flex;
+  text-align: center;
+}
+
+.event-photo-wishlist img {
+  height: auto;
+  border-radius: 8px;
+  float:left;
+  width: 200px;
+  height: 150px; /* Set width for the image */
+}
+
+.event-info {
+  float:right;
+  margin-left: 10px; /* Add padding for spacing between image and details */
+}
+
+h2 {
+  margin-top: 10px;
+  font-size: 30px;
+  color: #f0ba4b;
+}
+
+.wishlist-and-going {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.wishlist-and-going form {
+  margin-left: 10px; 
+}
+
+.wishlist-and-going button {
+  border: 2px solid #f0ba4b; 
+  border-radius: 20px; 
+  padding: 8px 15px;
+  margin-top:6px;
+  background-color: #f0ba4b; 
+  color: #fff;
+  cursor: pointer;
+}
+
+.wishlist-and-going button.not-going {
+  background-color: #f00;
+  border-color: #f00; 
+  color: #fff;
+}
+
+.delete-comment-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: red;
+}
+
+.delete-comment-btn:hover {
+  color: darkred;
+}

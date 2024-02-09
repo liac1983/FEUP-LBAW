@@ -1,0 +1,1023 @@
+openapi: 3.0.0
+
+info: 
+  version: '1.0'
+  title: 'LBAW  GetTogether API'
+  description: 'Web Resources Specification (A7) for GetTogether'
+
+servers:
+  - url: http://lbaw2321.lbaw.fe.up.pt
+    description: Production server
+
+
+externalDocs:
+  description: Find more info here.
+  url: https://git.fe.up.pt/lbaw/lbaw2324/lbaw2321/-/wikis/eap
+
+tags:
+  - name: 'M01: Authentication'
+  - name: 'M02: Users'
+  - name: 'M03: Events'
+  - name: 'M04: Search'
+  - name: 'M05: Administration'
+  - name: 'M06: Comments'
+
+paths:
+
+  /login:
+    get:
+      operationId: R101
+      summary: 'R101: Login Form'
+      description: 'Provide login form. Access: PUB'
+      tags:
+        - 'M01: Authentication
+    '
+      responses:
+        '200':
+          description: 'Ok. Show log-in UI'
+    event:
+      operationId: R102
+      summary: 'R102: Login Action'
+      description: 'Processes the login form submission. Access: PUB'
+      tags:
+        - 'M01: Authentication
+    '
+ 
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+              required:
+                - username
+                - password
+ 
+      responses:
+        '302':
+          description: 'Redirect after processing the login credentials.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful authentication. Redirect to user profile.'
+                  value: '/users/{id}'
+                302Error:
+                  description: 'Failed authentication. Redirect to login form.'
+                  value: '/login'
+ 
+  /logout:
+
+    event:
+      operationId: R103 
+      summary: 'R103: Logout Action'
+      description: 'Logout the current authenticated used. Access: USR, ADM'
+      tags:
+        - 'M01: Authentication
+    '
+      responses:
+        '302':
+          description: 'Redirect after processing logout.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful logout. Redirect to login form.'
+                  value: '/login'
+
+  /register:
+    get:
+      operationId: R104
+      summary: 'R104: Register Form'
+      description: 'Provide new user registration form. Access: PUB'
+      tags:
+        - 'M01: Authentication
+    '
+      responses:
+        '200':
+          description: 'Ok. Show sign-up UI'
+
+    event:
+      operationId: R105
+      summary: 'R105: Register Action'
+      description: 'Processes the new user registration form submission. Access: PUB'
+      tags:
+        - 'M01: Authentication
+    '
+
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                username:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+              required:
+                - name
+                - username
+                - email
+                - password
+
+      responses:
+        '302':
+          description: 'Redirect after processing the new user information.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful authentication. Redirect to user profile.'
+                  value: '/users/{id}'
+                302Failure:
+                  description: 'Failed authentication. Redirect to login form.'
+                  value: '/login'
+
+  /profile:
+
+    get:
+      operationId: R201
+      summary: 'R201: View user profile'
+      description: 'Show the profile for a
+      n individual user, Access: USR, ADM, OWN'
+      tags:
+        - 'M02: Users'
+
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: True
+
+      responses:
+        '200':
+          description: 'Ok. Show view profile UI'
+        '302':
+          description: 'Redirect if user is not logged in or other user doesnt exists'
+          headers:
+            Location:
+              schema:
+                type: string
+              example:
+                302Failure:
+                  description: 'Failure.'
+
+  /events-begin:
+
+    get:
+      operationId: R202
+      summary: 'R202: View user home page'
+      description: 'Show user home page, Access: USR, ADM, OWN'
+      tags:
+        - 'M02: Users'
+
+      responses:
+        '200':
+          description: 'OK. Show the home page for an individual user'
+        '302':
+          description: 'Redirect after unauthorized request.'
+          headers:
+            Location:
+              schema:
+                type: string
+              example:
+                  302Success:
+                    description: 'You need login first. Redirect to login page.'
+                    value: '/login'
+
+######### EDIT PROFILE #########
+
+  /profile/edit-photo:
+
+    get:
+      operationId: R203
+      summary: 'R203: Edit user profile page.'
+      description: 'Shows the edit profile page of the user. Access: OWN'
+      tags:
+        - 'M02: Users'
+
+      responses:
+        '200':
+          description: 'Ok. You can now edit. Show edit profile UI.'
+        '401':
+          description: 'Unauthorized. You cannot edit this profile.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                401Success:
+                  description: 'Unauthorized. Redirect to user profile.'
+                  value: '/user/{id}'
+
+    event:
+      operationId: R204
+      summary: 'R204: Edit user profile action'
+      description: 'Processes and saves the changes made by user. Access: USR'
+      tags:
+        - 'M02: Users'
+
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                username:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+                confirm_password:
+                  type: string
+                  format: password
+
+              required:
+              - name
+              - username
+              - email
+
+      responses:
+        '302':
+          description: 'Redirect after processing the new user information.'
+          headers:
+            Location:
+              schema:
+                type: string
+              example:
+                302Success:
+                  description: 'Successful update. Redirect to user profile page.'
+                  value: '/user/{id}'
+                302Failure:
+                  description: 'Failed update. Redirect again to edit profile page.'
+                  value: '/user/edit'
+
+######### REMOVE PARTICIPANTS #########
+
+  /user/removeParticipant:
+
+    event:
+      operationId: R207
+      summary: 'R207: Removes a participant.'
+      description: 'Removes a participant from the event. Access: OWN'
+      tags:
+        - 'M02: Users'
+
+      requestBody:
+          required: true
+          content:
+            application/x-www-form-urlencoded:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                required:
+                  - id
+
+      responses:
+        '200':
+          description: 'Ok. You can remove a participant from your event.'
+        '403':
+          description: 'Forbiden action.'
+    
+######### FOLLOW #########
+
+  /user/follow:
+
+    event:
+      operationId: R208
+      summary: 'R208: Follows another user.'
+      description: 'Follows another user. Access: USR, ADM'
+      tags:
+        - 'M02: Users'
+
+      requestBody:
+          required: true
+          content:
+            application/x-www-form-urlencoded:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                required:
+                  - id
+
+      responses:
+        '200':
+          description: 'Ok. You followed a user.'
+        '403':
+          description: 'Forbiden action.'
+
+######### UNFOLLOW #########
+
+  /user/unfollow:
+
+    event:
+      operationId: R209
+      summary: 'R208: Unfollows another user.'
+      description: 'Unfollows another user. Access: USR, ADM'
+      tags:
+        - 'M02: Users'
+
+      requestBody:
+          required: true
+          content:
+            application/x-www-form-urlencoded:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                required:
+                  - id
+
+      responses:
+        '200':
+          description: 'Ok. You unfollowed a user.'
+        '403':
+          description: 'Forbiden action.'
+
+######### NOTIFICATIONS #########
+
+  /home/notifications:
+
+    get:
+      operationId: R214
+      summary: 'R214: User notifications page.'
+      description: 'Show user notifications page. Access: USR, ADM'
+      tags:
+        - 'M02: Users'
+
+      responses:
+        '200':
+          description: 'OK. Show the user notifications page.'
+        '302':
+          description: 'Redirect if user is not logged in'
+          headers:
+            Location:
+              schema:
+                type: string
+              example:
+                302Failure:
+                  description: 'Failure. User not logged in.'
+
+######### ABOUT PAGE #########
+
+  /about:
+
+    get:
+      operationId: R220
+      summary: 'R220: About static page'
+      description: 'Show About Page. Access USR, ADM, VST'
+      tags:
+        - 'M02: Users'
+
+      responses:
+        '200':
+          description: 'OK. Show the about page.'
+
+######### HELP PAGE #########
+
+  /help:
+
+    get:
+      operationId: R221
+      summary: 'R221: Help static page'
+      description: 'Show Help Page. Access USR, ADM, VST'
+      tags:
+        - 'M02: Users'
+
+      responses:
+        '200':
+          description: 'OK. Show the help page.'
+
+
+############################################ EVENTS ############################################
+
+######### CREATE EVENT #########
+  /event/{id}:
+
+    event:
+      operationId: R304
+      summary: 'R304: View event page'
+      description: 'View event. Access: USR , ADM ,OWN'
+      tags:
+        - 'M03: Events'
+
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                eventName:
+                  type: string
+                description:
+                  type: string
+                registrationEndTime:
+                  type: 
+                startDateTime:
+                  type:
+                endDateTime:
+                  type:
+                isPublic:
+                  type: boolean
+                capacity:
+                  type: integer
+                status: 
+                  type: tag
+                local:
+                  type: string
+                tag:
+                  type: string
+
+  /event/myevents:
+
+    event:
+      operationId: R305
+      summary: 'R305: View my own event'
+      description: 'Create event. Access: OWN'
+      tags:
+        - 'M03: Events'
+
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                eventName:
+                  type: string
+                description:
+                  type: string
+                registrationEndTime:
+                  type: 
+                startDateTime:
+                  type:
+                endDateTime:
+                  type:
+                isPublic:
+                  type: boolean
+                capacity:
+                  type: integer
+                status: 
+                  type: tag
+                local:
+                  type: string
+                tag:
+                  type: string
+                
+                
+
+  /event/create:
+
+    event:
+      operationId: R301
+      summary: 'R301: Create event action'
+      description: 'Create event. Access: USR'
+      tags:
+        - 'M03: Events'
+
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                eventName:
+                  type: string
+                description:
+                  type: string
+                registrationEndTime:
+                  type: 
+                startDateTime:
+                  type:
+                endDateTime:
+                  type:
+                isPublic:
+                  type: boolean
+                capacity:
+                  type: integer
+                status: 
+                  type: tag
+                local:
+                  type: string
+                tag:
+                  type: string
+                
+                
+      responses:
+        '302':
+          description: 'Redirect after processing the new event information.'
+          headers:
+            Location:
+              schema:
+                type: string
+              example:
+                302Success:
+                  description: 'Successful event create. Redirect back.'
+                302Failure:
+                  description: 'Failed. Redirect back.'
+
+######### DELETE EVENT #########
+
+  /event/delete:
+
+    event:
+      operationId: R302
+      summary: 'R302 : Delete event action'
+      description: 'Delete event. Access: OWN, ADM'
+      tags:
+        - 'M03: Events'
+
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+              required:
+                  - id
+
+      responses:
+        '200':
+          description: 'Redirect after processing the new event information.'
+        '403':
+          description: 'Forbiden action.'
+
+######### EDIT EVENT #########
+
+  /event/edit:
+
+    event:
+      operationId: R303
+      summary: 'R303: Edit event action'
+      description: 'Edit event. Access: OWN'
+      tags:
+        - 'M03: Events'
+
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                eventName:
+                  type: string
+                description:
+                  type: string
+                registrationEndTime:
+                  type: 
+                startDateTime:
+                  type:
+                endDateTime:
+                  type:
+                isPublic:
+                  type: boolean
+                capacity:
+                  type: integer
+                status: 
+                  type: tag
+                local:
+                  type: string
+                tag:
+                  type: string
+              required:
+                  - id
+                  - eventName
+                  - description
+                  - registrationEndTime
+                  - startDateTime
+                  - endDateTime
+                  - isPublic
+                  - capacity
+                  - status
+                  - local
+                  - tag
+      responses:
+        '200':
+          description: 'Edit successfully.'
+        '403':
+          description: 'Forbiden action.'
+
+######### ADD EVENT TO WISHLIST #########
+
+  /event/addtowishlist:
+
+    event:
+      operationId: R304
+      summary: 'R304: Adding event to wishlist action.'
+      description: 'Addint ecent ti wishlist. Access: USR, ADM'
+      tags:
+        - 'M03: Events'
+
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+              required:
+                  - id
+  
+      responses:
+        '200':
+          description: 'Like successfully.'
+        '403':
+          description: 'Forbiden action.'
+
+######### REMOVE FROM WISHLIST #########
+
+  /event/removefromwishlist:
+
+    event:
+      operationId: R305
+      summary: 'R305: Removing event from wishlist action.'
+      description: 'Removing event from wishlist. Access: USR, ADM'
+      tags:
+        - 'M03: Events'
+
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+              required:
+                  - id
+
+      responses:
+        '200':
+          description: 'Unlike successfully.'
+        '403':
+          description: 'Forbiden action.'
+
+############################################ SEARCH ############################################
+
+######### SEARCH PAGE #########
+
+  /home/search:
+
+    get:
+      operationId: R401
+      summary: 'R401: View user search page'
+      description: 'Show user search page, Access: USR, ADM'
+      tags:
+        - 'M04: Search'
+
+      responses:
+        '200':
+          description: 'OK. Show the search page UI'
+        '302':
+          description: 'Redirect after unauthorized request.'
+          headers:
+            Location:
+              schema:
+                type: string
+              example:
+                 - 302Success:
+                    description: 'You need login first. Redirect to login page.'
+                    value: '/login'
+
+######### SEARCH USER #########
+
+  /api/user:
+
+    get:
+      operationId: R402
+      summary: 'R402 : Search users'
+      description: 'Search users. Access: USR, ADM'
+      tags:
+        - 'M04: Search'
+
+      parameters:
+        - in: query
+          name: search
+          description: 'Search content'
+          schema:
+            type: string
+          required: true
+
+      responses:
+        '200':
+          description: 'Success. Returns some HTML text containing a list of users information'
+        '403':
+          description: 'Forbiden action. You need to be logged in first'
+
+######### SEARCH EVENT #########
+
+  /api/event:
+
+    get:
+      operationId: R403
+      summary: 'R403 : Search events'
+      description: 'Search events. Access: USR, ADM'
+      tags:
+        - 'M04: Search'
+
+      parameters:
+        - in: query
+          name: content
+          description: 'Search content'
+          schema:
+            type: string
+          required: true
+
+      responses:
+        '200':
+          description: 'Success. Returns some HTML text containing a list of events information'
+        '403':
+          description: 'Forbiden action. You need to be logged in first'
+
+######### SEARCH COMMENT #########
+
+
+
+
+  /api/comment:
+
+    get:
+      operationId: R404
+      summary: 'R404 : Search comments'
+      description: 'Search comments. Access: USR, ADM'
+      tags:
+        - 'M04: Search'
+
+      parameters:
+        - in: query
+          name: content
+          description: 'Search content'
+          schema:
+            type: string
+          required: true
+
+      responses:
+        '200':
+          description: 'Success. Returns some HTML text containing a list of comments information'
+        '403':
+          description: 'Forbiden action. You need to be logged in first'
+
+############################################ ADMINISTRATION ############################################
+
+######### ADMIN PAGE #########
+
+  /admin:
+
+    get:
+      operationId: R501
+      summary: 'R501: View admin page'
+      description: 'Show admin page UI, Access: ADM'
+      tags:
+        - 'M05: Administration'
+
+      responses:
+        '200':
+          description: 'OK. Show the admin page UI'
+        '403':
+          description: 'This action is unauthorized.'
+
+######### USER SUSPEND #########
+
+  /admin/user/Suspend:
+
+    post:
+      operationId: R502
+      summary: 'R502: Suspend a user from logging in action'
+      description: 'Suspend a user. Access: ADM'
+      tags:
+        - 'M05: Administration'
+
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: integer
+              required:
+                - user_id
+
+      responses:
+        '200':
+          description: 'Ok. User Suspended.'
+        '401':
+          description: 'Unauthorized. You cannot Suspend this user.'
+
+######### USER UNSUSPEND #########
+
+  /admin/user/unSuspend:
+
+    post:
+      operationId: R503
+      summary: 'R503: UnSuspending a user from logging in action'
+      description: 'UnSuspend a user. Access: ADM'
+      tags:
+        - 'M05: Administration'
+
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: integer
+              required:
+                - user_id
+
+      responses:
+        '200':
+          description: 'Ok. User unSuspended.'
+        '401':
+          description: 'Unauthorized. You cannot unSuspend this user.'
+
+############################################ COMMENTS ##############################################
+
+######### CREATE COMMENT #########
+
+  /comment/create:
+
+    post:
+      operationId: R601
+      summary: 'R601: Create comment action'
+      description: 'Create comment. Access: USR'
+      tags:
+        - 'M06: Comments'
+
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                content:
+                  type: string
+                event_id:
+                  type: integer
+
+      responses:
+        '302':
+          description: 'Redirect after processing the new comment information.'
+          headers:
+            Location:
+              schema:
+                type: string
+              example:
+                302Success:
+                  description: 'Successful comment create. Redirect back.'
+                302Failure:
+                  description: 'Failed. Redirect back.'
+
+######### DELETE COMMENT #########
+
+  /comment/delete:
+
+    post:
+      operationId: R602
+      summary: 'R602 : Delete comment action'
+      description: 'Delete comment. Access: OWN, ADM'
+      tags:
+        - 'M06: Comments'
+
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+              required:
+                  - id
+
+      responses:
+        '200':
+          description: 'Redirect after processing the old comment information.'
+        '403':
+          description: 'Forbiden action.'
+
+######### EDIT COMMENT #########
+
+  /comment/edit:
+
+    post:
+      operationId: R603
+      summary: 'R603: Edit comment action'
+      description: 'Edit comment. Access: OWN'
+      tags:
+        - 'M06: Comments'
+
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                content:
+                  type: string
+
+      responses:
+        '200':
+          description: 'Edit successfully.'
+        '403':
+          description: 'Forbiden action.'
+
+################## USER VERIFY ####################
+
+  /api/userVerify:
+
+    get:
+      operationId: R801
+      summary: 'R801 : Verify username'
+      description: 'Verify if username exists. Access: USR, ADM'
+      tags:
+        - 'M08: API'
+
+      parameters:
+        - in: query
+          name: username
+          description: 'Username attemp'
+          schema:
+            type: string
+          required: true
+
+      responses:
+        '200':
+          description: 'Success. Returns an ID of correspondent username'
+        '403':
+          description: 'Forbiden action. You need to be logged in first'
+
+################## NOTIFICATIONS ####################
+
+  /api/notifications:
+
+    get:
+      operationId: R802
+      summary: 'R802 : Notifications'
+      description: 'Get user notifications. Access: USR'
+      tags:
+        - 'M08: API'
+
+      parameters:
+        - in: query
+          name: id
+          description: 'Notification type: post, comment, user, event, all'
+          schema:
+            type: string
+          required: true
+
+      responses:
+        '200':
+          description: 'Success. Returns some HTML text containing a list of notifications information'
+        '403':
+          description: 'Forbiden action. You need to be logged in first'
+
